@@ -63,6 +63,18 @@ OMNY は作品ごとにファイルとして保存する（`<日付>_<タイト�
 - page2 以降は page1 の **`session id` を名指しして** `codex exec resume <ID>` で続きを頼む（`forge.sh` が自動でやる）。`resume --last` は他の codex 呼び出しと混ざるので使わない（罠3）。だから焼いている最中に別の画像生成を並走させても大丈夫
 - 画風を変えたいときは `omay/styles.md` の呪文を OMNY の `meta.style_notes` 先頭行に入れる
 
+### ③' ローカル作画で焼く（codex を使わない場合）
+
+```bash
+./scripts/forge-local.sh -n <OMNYファイル> [-r '<キャラ名>=<立ち絵>']
+```
+
+- `config/local.conf` があり、mflux の入った Mac（このマシンか `RENDER_HOST`）で描く。仕組みは [`docs/local.md`](docs/local.md)
+- 1 回の実行で ①立ち絵 → ②英語プロンプト → ③コマ（立ち絵を参照）→ ④組版 まで通り、`out/<作品名>-local/pageN.png` に並ぶ。回収（④）は不要
+- セリフ・フキダシはネームどおりに組版で貼るので、**文字の誤りは出ない**。検品で見るのは絵（キャラの一貫・持ち物・天気・人物の向き）とフキダシが顔にかぶっていないか
+- 気になるコマは `prompts/<id>.txt` を具体的に直して `--redo <id>`（seed も変わる）。ページ全体を焼き直さない
+- 所要は 1 コマ約 1 分。timeout はコマ数 × 90 秒 + 余裕
+
 ## ④ 回収
 
 `forge.sh` が終わると `collect.sh` が自動で走り、`out/<作品名>/page1.png ...` に並ぶ。

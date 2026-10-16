@@ -77,6 +77,12 @@ page1.png ... pageN.png
 
 ## 準備
 
+### 呼ぶ側のマシン（forge-local.sh を動かす所）
+
+- `python3` と PyYAML（②のプロンプト作り）
+- `PROMPT_LLM` に書く LLM のコマンド（既定 `claude -p`。ログインしておく）
+- 作画マシンが別なら、そこへ鍵で ssh できること
+
 ### 作画マシン（Apple Silicon の Mac）
 
 1. [mflux](https://github.com/filipstrand/mflux)（0.22.0 で確認）を入れる: `uv tool install mflux`

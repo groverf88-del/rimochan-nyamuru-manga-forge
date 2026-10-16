@@ -1,0 +1,36 @@
+# ============================================================
+# ローカル作画（scripts/forge-local.sh）の設定。
+#   cp config/local.conf.example config/local.conf して書き換える。
+#   config/local.conf は .gitignore 済み（ホスト名や置き場はリポジトリに入れない）。
+#   この中身は bash として読まれる。作画マシン側で展開したい $HOME は '…' で囲んで書く。
+# ============================================================
+
+# --- ② 英語プロンプトを書かせる LLM（forge-local.sh を動かすマシンで動く） ---
+# 標準入力で依頼文を受け、標準出力に答えを返すコマンド。JSON だけを答えるよう依頼文で頼んである。
+PROMPT_LLM="claude -p"
+
+# --- 作画マシン ---
+# 空なら、このマシンで描く（Apple Silicon + mflux がある場合）。
+# 別の Mac で描くなら ssh の行き先と、必要なら踏み台を書く。
+RENDER_HOST=""                       # 例: user@studio.local
+SSH_OPTS=""                          # 例: -J user@jumphost
+RENDER_ROOT='$HOME/manga-forge-work' # 作画マシン上の作業場所（1 回ごとにこの下へフォルダを作る）
+KEEP_REMOTE=0                        # 1 なら作画マシンに作業フォルダを残す（既定は回収したら消す）
+
+# --- 作画マシン側の置き場（作画マシンで展開される） ---
+# mflux（0.22.0 で確認）の実行ファイルの場所。uv tool install mflux なら ~/.local/bin
+MFLUX_BIN_DIR='$HOME/.local/bin'
+# FLUX.2-klein-4B（4bit）の snapshot の実パス（glob 可）。
+# HF の repo 名だと offline でトークナイザの解決に失敗するので、実パスを渡す（docs/local.md）
+KLEIN_MODEL='$HOME/.cache/huggingface/hub/models--Runpod--FLUX.2-klein-4B-mflux-4bit/snapshots/*'
+# 立ち絵と人物のいないコマを描く Z-Image-Turbo（repo 名か実パス）
+ZIT_MODEL='filipstrand/Z-Image-Turbo-mflux-4bit'
+ZIT_STEPS=9
+# 組版（compose.py）を動かす python。Pillow と PyYAML が要る。mflux の uv tool の python に両方入っている
+COMPOSE_PYTHON='$HOME/.local/share/uv/tools/mflux/bin/python'
+# 顔よけの補助（Vision）。無ければ render.sh が swiftc で作る
+FACES_BIN='$HOME/manga-forge-work/bin/faces'
+# MLX のキャッシュ上限（GB）。FLUX.2-klein 4bit で 1 コマ約 6GB
+CACHE_GB=8
+# 空きメモリがこの % 未満なら空くまで待つ（他の重い計算と取り合わないため）。空にすると待たない
+MIN_FREE_PCT=30

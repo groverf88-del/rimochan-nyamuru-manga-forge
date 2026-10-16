@@ -31,6 +31,7 @@ OMNY（漫画ネームYAML・絶対座標でコマ割り）
 - ✅ ページ数・コマ割り・フキダシの形・背景の描き込み量まで**データとして指定**できます
 - ✅ 1つの会話でページを焼き続けるので、**キャラデザと画風がページ間で一貫**します
 - ❌ 画像生成モデルそのものではありません（作画は codex / ChatGPT image に投げます）
+- ✅ codex を使わず、**手元の Apple Silicon の Mac だけで描くローカル作画**もあります（[`docs/local.md`](docs/local.md)）
 - ❌ ワンクリックで傑作が出る魔法ではありません。**ネームの良さがそのまま出ます**
 
 ネームを人間が編集したい場合は、姉妹プロジェクトの
@@ -82,6 +83,22 @@ cd rimochan-nyamuru-manga-forge
 
 ---
 
+## ローカル作画（codex なし）
+
+Apple Silicon の Mac と [mflux](https://github.com/filipstrand/mflux) があれば、作画を手元で済ませられます。
+絵は 1 コマずつ描き（文字は描かせない）、コマ割り・フキダシ・縦書きのセリフはネームどおりに後から貼ります。
+
+```bash
+cp config/local.conf.example config/local.conf   # mflux とモデルの置き場、別の Mac で描くなら ssh の行き先
+./scripts/forge-local.sh -n examples/sample-2page.omny.yaml
+# → out/sample-2page-local/page1.png, page2.png
+```
+
+1 回の実行で ①キャラの立ち絵 → ②各コマの英語プロンプト → ③立ち絵を参照してコマを描く → ④組版、まで通ります。
+仕組み・準備・描き直しのやり方は [`docs/local.md`](docs/local.md) にあります。
+
+---
+
 ## Claude Code のスキルとして使う
 
 こちらが本来の使い方です。**ネームを書くところから任せられます。**
@@ -115,9 +132,13 @@ prompts/ndm-v10.md          ネーム生成プロンプト（OMNYの書き方の
 scripts/forge.sh            OMNY → 原稿PNG を焼くドライバ
 scripts/collect.sh          生成画像をページ順に回収
 scripts/deliver.sh          検品済みの原稿を希望の場所へ納品
+scripts/forge-local.sh      OMNY → 原稿PNG をローカルの画像生成で焼くドライバ（codex 不要）
+scripts/local/              ローカル作画の部品（プロンプト作り・作画・組版・顔よけ）
+config/local.conf.example   ローカル作画の設定の見本
 examples/                   サンプルネーム
 docs/setup.md               codex CLI の準備
 docs/characters.md          自分のキャラ・背景を登録する
+docs/local.md               ローカル作画の仕組みと準備
 docs/pitfalls.md            ⚠️ ハマりどころ全集（先に読むと数日助かります）
 ```
 

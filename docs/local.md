@@ -8,6 +8,16 @@ codex（ChatGPT の画像生成）を使わず、**手元の Apple Silicon の M
 # → out/sample-2page-local/page1.png, page2.png
 ```
 
+同梱のサンプルネームをこのやり方で焼いた例（[`examples/output-local/`](../examples/output-local/)）：
+
+<p align="center">
+  <img src="../examples/output-local/page1.png" alt="ローカル作画の出力 1ページ目" width="49%">
+  <img src="../examples/output-local/page2.png" alt="ローカル作画の出力 2ページ目" width="49%">
+</p>
+
+1 回の実行（Mac Studio で約 6.5 分・Peak MLX memory 7.0GB）のあと、1 ページ目の 2 コマ目だけ
+`prompts/p1_2.txt` を「真横から・両足が浮いて水たまりを跳ぶ」と具体的に直して `--redo p1_2` した（約 1 分）。
+
 ## forge.sh との違い
 
 | | forge.sh（codex） | forge-local.sh（ローカル） |

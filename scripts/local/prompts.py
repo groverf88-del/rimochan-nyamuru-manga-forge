@@ -148,8 +148,12 @@ Rules for each panel description (this is the most important part):
 - Start with "Scene: " and describe only what is visible in this one panel, in present tense.
 - Use the character's English name, and right after the action restate the appearance in short:
   "<Name>: <appearance>." so every panel carries the same look.
-- Follow the framing hint for each character exactly (e.g. "shown from the waist up in the center of
-  the frame", "small, at the lower left of the frame, looking up").
+- Follow the framing hint for each character exactly and make it a camera instruction: "shown from the
+  waist up" becomes "medium shot cropped at the waist, legs not visible"; "chest up" becomes "cropped
+  at the chest"; "small, at the lower left of the frame" stays small.
+- Describe every action as a concrete body pose and camera angle, not as a mood: e.g. for stepping
+  over a puddle, "seen from the side, mid-jump over a puddle with both feet off the ground"; for
+  looking up, "head tilted back, eyes open looking up". Keep the eyes open unless the action says otherwise.
 - Be concrete and countable: "exactly one white plastic bag in her right hand; her left hand is empty".
   Say where every held object is. Do not add objects that the action does not mention.
 - Weather and time must match setting. If it is after rain, say "the rain has already stopped and no
@@ -157,7 +161,8 @@ Rules for each panel description (this is the most important part):
 - Clothing prints or icons appear only where the appearance says (e.g. "on the front of the chest
   only"); never put prints on the back.
 - Shops, signs and products are fictional: describe shapes and colors, never brand names or logos,
-  and signs carry simple icons instead of letters.
+  and signs carry simple icons instead of letters. Shop windows and walls are plain glass or plain
+  walls with no posters, no menus and no printed notices (the model turns those into fake letters).
 - If the action says something must NOT be shown in this panel (it is revealed later), do not mention
   that thing at all; describe only what the character does (e.g. looking up at the sky out of frame).
 - For each area listed under "keep empty", describe a calm plain background that fills it
@@ -210,7 +215,8 @@ def edit_prefix(info):
 def ref_prompt(style, c):
     p = c["pronoun"]
     return (f"{style} Character reference sheet of {c['name_en']}: {c['appearance']} "
-            f"Full body, standing straight, facing the viewer, arms relaxed at {p} sides, centered. "
+            f"Full body, standing straight, facing the viewer, arms relaxed at {p} sides, empty hands, "
+            "carrying nothing (no bag, no backpack, no accessories), centered. "
             "Plain pure white background, even soft lighting, no shadows on the background. " + NO_TEXT)
 
 
